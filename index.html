@@ -350,7 +350,7 @@ footer .brand{color:#fff}
 /* ============ PENGATURAN: ubah bagian ini saja ============ */
 const CONFIG = {
   // URL Web App dari Google Apps Script (lihat panduan Code.gs)
-  APPS_SCRIPT_URL: "",
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxwXAYnNh8RpwW9UYdFSf62pJFQVOiCu8h5EM5NqtOXO8sbimrghNle58uSxa8xTcec/exec",
   // Nomor WhatsApp admin, format internasional tanpa + atau 0 di depan
   WA_NUMBER: "6282375392255",
   WA_TEXT: "Halo Shadow Security Indonesia, saya ingin konsultasi keamanan.",
@@ -447,7 +447,7 @@ form.addEventListener("submit", e => {
   if(form.elements.website.value) return;           /* honeypot: bot */
   if(!validate()) return;
   const url = (CONFIG.APPS_SCRIPT_URL || "").trim();
-  if(!/^https://script.google.com/macros/s/AKfycbypXaGBtE2Tgz1ghjhAh9Izza3u02mWsN3IXrZr_BwiMiwdKxiLoAmxsl-lhl1ADaRksA/exec/.test(url)){
+  if(!/^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+|macros)\/s\/[^\/]+\/exec$/.test(url)){
     showError("Formulir belum terhubung ke Google Sheets (alamat Web App belum diisi dengan benar). Untuk sementara, kirim lewat tombol WhatsApp.");
     return;
   }
