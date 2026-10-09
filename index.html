@@ -317,7 +317,7 @@ const CONFIG = {
 /* ========================================================== */
 
 const $ = s => document.querySelector(s);
-const waUrl = "https://wa.me/" + CONFIG.WA_NUMBER + "?text=" + encodeURIComponent(CONFIG.WA_TEXT);
+const waUrl = "https://wa.me/" + 082375392255 + "?text=" + encodeURIComponent(CONFIG.WA_TEXT);
 ["#waBtn","#waBtn2","#waFooter","#waFloat"].forEach(id => { const el=$(id); if(el) el.href = waUrl; });
 $("#mailFooter").href = "mailto:" + CONFIG.ADMIN_EMAIL;
 $("#mailFooter").textContent = CONFIG.ADMIN_EMAIL;
