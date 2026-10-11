@@ -152,6 +152,22 @@ footer .brand{color:#fff}
 @media (max-width:520px){ .two{grid-template-columns:1fr} .formcard{padding:22px} }
 @media (prefers-reduced-motion:reduce){ .dot{animation:none} html{scroll-behavior:auto} .btn{transition:none} }
 </style>
+  <style>
+/* ----- Testimoni ----- */
+.tm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px 36px}
+.tm-item{margin:0;padding:4px 0 4px 22px;border-left:3px solid var(--merah)}
+.tm-item blockquote{margin:0 0 16px;font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.4;letter-spacing:-.01em;color:var(--ink)}
+.tm-item figcaption{font-size:.92rem;color:var(--steel)}
+.tm-item figcaption strong{color:var(--ink);font-weight:600}
+.tm-tag{display:inline-block;margin-top:8px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;font-size:.8rem;background:var(--paper)}
+
+/* ----- Instagram ----- */
+.ig-gate{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:18px 20px;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;margin-bottom:28px}
+.ig-gate p{margin:0;flex:1 1 280px;font-size:.93rem;color:var(--steel)}
+.ig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;align-items:start}
+.ig-grid .instagram-media{min-width:0!important;max-width:100%!important;width:100%!important;margin:0 auto!important}
+.ig-more{margin-top:28px}
+</style>
 </head>
 <body>
 
@@ -298,6 +314,32 @@ footer .brand{color:#fff}
       <li><h3>Erika Ramen</h3><p><a href="https://www.linkedin.com/in/erika-ramen/" target="_blank" rel="noopener">Lihat profil LinkedIn</a></p></li>
       <li><h3>Endriel Hanan</h3><p><a href="https://www.linkedin.com/in/endrielhanan/" target="_blank" rel="noopener">Lihat profil LinkedIn</a></p></li>
     </ul>
+  </div>
+</section>
+
+<section id="testimoni" class="tinted" hidden>
+  <div class="wrap">
+    <h2 class="sec">Kata mereka yang pernah kami bantu</h2>
+    <p class="sec-lede">Nama disamarkan atas permintaan klien. Kami tidak menampilkan detail yang bisa membahayakan keamanan mereka.</p>
+    <div class="tm-grid" id="tmGrid"></div>
+  </div>
+</section>
+
+<section id="instagram" hidden>
+  <div class="wrap">
+    <h2 class="sec">Tips keamanan dari Instagram kami</h2>
+    <p class="sec-lede">Postingan terbaru dari akun resmi @shadowsecindonesia.</p>
+
+    <div class="ig-gate" id="igGate">
+      <p>Postingan ditampilkan langsung dari Instagram. Saat dimuat, Instagram (Meta) bisa menerima data kunjungan Anda. Karena itu postingan baru dimuat setelah Anda menekan tombol.</p>
+      <button type="button" class="btn btn-wa" id="igLoad">Tampilkan postingan</button>
+    </div>
+
+    <div class="ig-grid" id="igGrid"></div>
+
+    <p class="ig-more">
+      <a class="btn btn-ghost" href="https://www.instagram.com/shadowsecindonesia/" target="_blank" rel="noopener">Buka Instagram kami</a>
+    </p>
   </div>
 </section>
 
@@ -461,5 +503,111 @@ form.addEventListener("submit", e => {
   pending = setTimeout(() => showError("Belum ada konfirmasi dari server. Pesan mungkin belum terkirim. Coba kirim ulang, atau hubungi kami lewat WhatsApp."), 25000);
 });
 </script>
+  <script>
+/* =================== ISI DI SINI =================== */
+
+/* Testimoni: HANYA isi dengan testimoni asli dan yang sudah diizinkan klien.
+   Hapus tanda // di depan contoh format, lalu ganti dengan data sebenarnya.
+   Selama daftar kosong, bagian testimoni tidak tampil di halaman. */
+const TESTIMONIALS = [
+  // { nama: "Rina", kota: "Bandung", layanan: "Pemulihan Akun", isi: "Tulis kutipan asli klien di sini." },
+  // { nama: "Dimas", kota: "Surabaya", layanan: "Penetration Testing", isi: "Tulis kutipan asli klien di sini." },
+];
+
+/* Postingan Instagram: tempel link postingan atau reel (akun harus publik).
+   Cara dapat link: buka postingan > titik tiga > Salin tautan.
+   Selama daftar kosong, bagian Instagram tidak tampil di halaman. */
+const IG_POSTS = [
+  // "https://www.instagram.com/p/KODEPOSTINGAN/",
+  // "https://www.instagram.com/reel/KODEREEL/",
+];
+
+/* Ubah ke true jika ingin postingan langsung dimuat tanpa tombol persetujuan */
+const IG_AUTOLOAD = false;
+
+/* =================== KODE (tidak perlu diubah) =================== */
+(function(){
+  /* --- Testimoni --- */
+  const tmSec = document.getElementById("testimoni");
+  const tmGrid = document.getElementById("tmGrid");
+  if(tmSec && tmGrid && Array.isArray(TESTIMONIALS) && TESTIMONIALS.length){
+    TESTIMONIALS.forEach(t => {
+      if(!t || !t.isi) return;
+      const fig = document.createElement("figure");
+      fig.className = "tm-item";
+      const q = document.createElement("blockquote");
+      q.textContent = "\u201C" + t.isi + "\u201D";
+      const cap = document.createElement("figcaption");
+      const who = document.createElement("strong");
+      who.textContent = t.nama || "Klien";
+      cap.appendChild(who);
+      if(t.kota) cap.appendChild(document.createTextNode(", " + t.kota));
+      if(t.layanan){
+        cap.appendChild(document.createElement("br"));
+        const tag = document.createElement("span");
+        tag.className = "tm-tag";
+        tag.textContent = t.layanan;
+        cap.appendChild(tag);
+      }
+      fig.append(q, cap);
+      tmGrid.appendChild(fig);
+    });
+    if(tmGrid.children.length) tmSec.hidden = false;
+  }
+
+  /* --- Instagram --- */
+  const igSec = document.getElementById("instagram");
+  const igGrid = document.getElementById("igGrid");
+  const igGate = document.getElementById("igGate");
+  const igBtn = document.getElementById("igLoad");
+  const OK = /^https:\/\/www\.instagram\.com\/(p|reel|tv)\/[A-Za-z0-9_-]+\/?(\?.*)?$/;
+  const posts = (Array.isArray(IG_POSTS) ? IG_POSTS : []).filter(u => OK.test(u));
+  if(!igSec || !igGrid || !posts.length) return;
+  igSec.hidden = false;
+
+  let loaded = false;
+  function loadIG(){
+    if(loaded) return; loaded = true;
+    if(igGate) igGate.style.display = "none";
+    posts.forEach(u => {
+      const base = u.split("?")[0];
+      const bq = document.createElement("blockquote");
+      bq.className = "instagram-media";
+      bq.setAttribute("data-instgrm-permalink", base + "?utm_source=ig_embed&utm_campaign=loading");
+      bq.setAttribute("data-instgrm-version", "14");
+      const a = document.createElement("a");
+      a.href = base; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = "Lihat postingan ini di Instagram";
+      bq.appendChild(a);
+      igGrid.appendChild(bq);
+    });
+    if(window.instgrm && window.instgrm.Embeds){ window.instgrm.Embeds.process(); return; }
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.instagram.com/embed.js";
+    s.onload = () => { if(window.instgrm) window.instgrm.Embeds.process(); };
+    document.body.appendChild(s);
+  }
+  if(IG_AUTOLOAD) loadIG();
+  else if(igBtn) igBtn.addEventListener("click", loadIG);
+})();
+</script>
+
+
+<!-- ################ BLOK 4 : MENU NAVIGASI (opsional, setelah Blok 3, sebelum </body>) ################ -->
+<script>
+(function(){
+  var sec = document.getElementById("testimoni");
+  var nav = document.querySelector('nav[aria-label="Navigasi utama"]');
+  if(!sec || sec.hidden || !nav) return;
+  var link = document.createElement("a");
+  link.href = "#testimoni";
+  link.textContent = "Testimoni";
+  var anchor = nav.querySelector('a[href="#tim"]');
+  if(anchor) anchor.insertAdjacentElement("afterend", link);
+  else nav.appendChild(link);
+})();
+</script>
+
 </body>
 </html>
