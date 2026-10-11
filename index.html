@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Shadow Sec IDN">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:title" content="Shadow Security Indonesia (IDN)">
+<meta property="og:description" content="Cybersecurity services: penetration testing, audits, digital forensics, and account recovery.">
+<meta property="og:image" content="icon-512.png">
+<title>Shadow Security Indonesia (IDN) — Cybersecurity Services</title>
+<meta name="description" content="Shadow Security Indonesia: penetration testing, security audits, digital forensics, and account recovery. Send us your issue and we'll handle it confidentially.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fog:#E8EBF0;
+  --paper:#F7F8FA;
+  --ink:#111827;
+  --steel:#44546A;
+  --line:#C5CCD7;
+  --merah:#C8102E;
+  --merah-dark:#9E0C24;
+  --ok:#1C7C54;
+  --sx:18; --sy:14;            /* arah bayangan, diubah oleh JS */
+  --display:"Bricolage Grotesque","Arial Narrow",Arial,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fog);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--merah);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* Header */
+header.top{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{font-family:var(--display);font-weight:800;font-size:1.25rem;letter-spacing:-.01em;text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand img{width:46px;height:46px;border-radius:10px;display:block;flex:none}
+nav a{margin-left:22px;text-decoration:none;font-weight:500;font-size:.95rem;color:var(--steel)}
+nav a:hover{color:var(--ink)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start;padding:40px 0 88px}
+.status{display:inline-flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 12px;font-size:.9rem;font-weight:500}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(28,124,84,.5);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(28,124,84,0)}100%{box-shadow:0 0 0 0 rgba(28,124,84,0)}}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.7rem,6.4vw,5.4rem);line-height:.98;letter-spacing:-.035em;margin:26px 0 24px;color:var(--ink)}
+h1 .shade{display:block}
+.lede{max-width:34em;font-size:1.15rem;color:var(--steel);margin:0 0 30px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 1rem var(--body);padding:14px 22px;border-radius:6px;border:2px solid var(--ink);text-decoration:none;cursor:pointer;transition:transform .15s,background .15s}
+.btn-wa{background:var(--ink);color:#fff}
+.btn-wa:hover{background:#000;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-ghost:hover{background:var(--paper)}
+.scope{margin-top:30px;font-size:.92rem;color:var(--steel);max-width:36em;border-left:3px solid var(--merah);padding-left:14px}
+
+/* Form card */
+.formcard{background:var(--paper);border:2px solid var(--ink);border-radius:10px;padding:30px;
+  box-shadow:calc(var(--sx)*1px) calc(var(--sy)*1px) 0 rgba(17,24,39,.22);position:relative}
+.formcard h2{font-family:var(--display);font-size:1.55rem;margin:0 0 4px;letter-spacing:-.02em}
+.formcard .sub{margin:0 0 22px;color:var(--steel);font-size:.95rem}
+.field{margin-bottom:16px}
+label{display:block;font-weight:600;font-size:.92rem;margin-bottom:6px}
+label small{font-weight:400;color:var(--steel)}
+input,select,textarea{width:100%;font:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:6px;padding:11px 13px;transition:border-color .15s}
+input:hover,select:hover,textarea:hover{border-color:var(--steel)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(200,16,46,.25)}
+textarea{min-height:120px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.err{color:var(--merah-dark);font-size:.85rem;margin-top:4px;display:none}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--merah)}
+.field.bad .err{display:block}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.submit{width:100%;justify-content:center;background:var(--merah);border-color:var(--merah);color:#fff;font-size:1.05rem;padding:15px 22px}
+.submit:hover{background:var(--merah-dark);border-color:var(--merah-dark)}
+.submit[disabled]{opacity:.65;cursor:progress}
+.secure{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:.85rem;color:var(--steel)}
+.secure svg{flex:none;margin-top:2px}
+.formmsg{display:none;margin-top:14px;padding:12px 14px;border-radius:6px;font-size:.93rem}
+.formmsg.error{display:block;background:#FBE9EC;border:1px solid #E7A5B0;color:var(--merah-dark)}
+.done{display:none;text-align:left}
+.done.show{display:block}
+.done .tick{width:44px;height:44px;border-radius:50%;background:var(--ok);display:grid;place-items:center;margin-bottom:14px}
+.done h2{margin-bottom:8px}
+.done p{margin:0 0 14px;color:var(--steel)}
+
+/* Sections */
+section{padding:84px 0;border-top:1px solid var(--line)}
+section.tinted{background:var(--paper)}
+h2.sec{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,3.6vw,2.8rem);letter-spacing:-.03em;line-height:1.05;margin:0 0 14px;max-width:16em}
+.sec-lede{color:var(--steel);max-width:36em;margin:0 0 44px}
+
+/* Services as ruled list */
+.svc{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.svc li{display:grid;grid-template-columns:minmax(200px,.8fr) 1.6fr;gap:24px;padding:22px 0;border-bottom:1px solid var(--line)}
+.svc h3{margin:0;font-family:var(--display);font-size:1.3rem;letter-spacing:-.015em}
+.svc p{margin:0;color:var(--steel)}
+
+/* Steps */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;counter-reset:s}
+.steps li{counter-increment:s;padding:6px 28px 6px 0;margin-right:28px;border-right:1px solid var(--line)}
+.steps li:last-child{border-right:0;margin-right:0}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--ink);color:#fff;font:800 1.1rem var(--display);margin-bottom:16px}
+.steps h3{font-family:var(--display);font-size:1.3rem;margin:0 0 8px;letter-spacing:-.015em}
+.steps p{margin:0;color:var(--steel)}
+
+/* Trust */
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.trust ul{margin:0;padding:0;list-style:none}
+.trust li{padding:14px 0 14px 34px;border-bottom:1px solid var(--line);position:relative}
+.trust li::before{content:"";position:absolute;left:0;top:19px;width:16px;height:16px;border-radius:50%;background:var(--ink)}
+.trust li::after{content:"";position:absolute;left:5px;top:24px;width:6px;height:3px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+.trust strong{display:block}
+
+/* FAQ */
+details{border-bottom:1px solid var(--line);padding:18px 0}
+details:first-of-type{border-top:2px solid var(--ink)}
+summary{cursor:pointer;font-weight:600;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:500 1.5rem/1 var(--display);color:var(--merah)}
+details[open] summary::after{content:"–"}
+details p{margin:12px 0 0;color:var(--steel);max-width:44em}
+
+footer{padding-bottom:calc(40px + env(safe-area-inset-bottom));background:var(--ink);color:#C9D0DA;padding:48px 0 40px;font-size:.93rem}
+footer .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px}
+footer a{color:#fff}
+footer address{font-style:normal;margin:0 0 6px}
+footer .brand{color:#fff}
+.ft{margin:0 0 8px;font-weight:600;color:#fff}
+
+.float-wa{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:20;display:none;width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:40px;padding-bottom:64px}
+  .steps{grid-template-columns:1fr;gap:28px}
+  .steps li{border-right:0;margin-right:0;padding-right:0}
+  .trust{grid-template-columns:1fr;gap:28px}
+  .svc li{grid-template-columns:1fr;gap:6px}
+  header.top{flex-wrap:wrap;gap:6px}
+  nav{display:flex;width:100%;gap:20px;overflow-x:auto;white-space:nowrap;padding:4px 0 8px;-webkit-overflow-scrolling:touch}
+  nav a{margin-left:0}
+  .float-wa{display:grid}
+}
+@media (max-width:520px){ .two{grid-template-columns:1fr} .formcard{padding:22px} }
+@media (prefers-reduced-motion:reduce){ .dot{animation:none} html{scroll-behavior:auto} .btn{transition:none} }
+</style>
+<style>
+/* ----- Testimoni ----- */
+.tm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px}
+.tm-item{margin:0;display:flex;flex-direction:column;gap:18px;padding:26px;background:#fff;border:1.5px solid var(--line);border-radius:10px;position:relative;overflow:hidden}
+.tm-item::before{content:"\201C";position:absolute;top:2px;right:18px;font:800 5rem/1 var(--display);color:var(--merah);opacity:.16;pointer-events:none}
+.tm-item figcaption{display:flex;align-items:center;gap:14px}
+.tm-item blockquote{margin:0;font-size:1.05rem;line-height:1.65;color:var(--ink)}
+.tm-ava{position:relative;flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;overflow:hidden;color:#fff;font:800 1.15rem var(--display);letter-spacing:.02em;background:var(--ink)}
+.tm-ava img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.tm-who{min-width:0}
+.tm-name{display:block;font-weight:600;line-height:1.25}
+.tm-meta{display:block;font-size:.85rem;color:var(--steel)}
+.tm-tag{display:inline-block;margin-top:6px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;font-size:.78rem;background:var(--paper);color:var(--ink)}
+.tm-empty{max-width:640px;padding:26px 28px;background:#fff;border:1.5px dashed var(--steel);border-radius:8px}
+.tm-empty p{margin:0 0 12px;color:var(--steel)}
+.tm-empty .btn{margin-top:6px}
+
+/* ----- Instagram ----- */
+.ig-gate{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:18px 20px;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;margin-bottom:28px}
+.ig-gate p{margin:0;flex:1 1 280px;font-size:.93rem;color:var(--steel)}
+.ig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;align-items:start}
+.ig-grid .instagram-media{min-width:0!important;max-width:100%!important;width:100%!important;margin:0 auto!important}
+.ig-more{margin-top:28px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#"><img src="logo.jpg" alt="" width="46" height="46">Shadow Security Indonesia</a>
+    <nav aria-label="Navigasi utama">
+      <a href="#layanan">Services</a>
+      <a href="#cara-order">How to order</a>
+      <a href="#privasi">Privacy</a>
+      <a href="#tim">Admin</a>
+      <a href="#faq">FAQ</a>
+      <a href="#kontak">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+  <div class="hero">
+    <div>
+      <span class="status"><span class="dot" aria-hidden="true"></span><span id="statusText">Admin online · slots available</span></span>
+      <h1 id="headline"><span class="shade">Your digital security, guarded from the shadows.</span></h1>
+      <p class="lede">Hacked, account taken over, or want your system tested before someone else tries? Tell us what's wrong. Our team analyzes and handles it confidentially.</p>
+      <div class="cta-row">
+        <a class="btn btn-wa" id="waBtn" href="#" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.1c-1.5 0-3-.4-4.2-1.200l-.3-.2-3 .8.8-2.900-.2-.3A8.100 8.100 0 1 1 12 20.100Zm4.500-6c-.2-.1-1.500-.7-1.700-.8-.2-.1-.4-.1-.6.100l-.8 1c-.1.200-.3.200-.5.100-1.500-.7-2.500-1.300-3.400-2.900-.3-.5.300-.5.800-1.500.1-.2 0-.3 0-.5l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.100-.7.300-.7.700-1 1.500-1 2.400.1 1 .5 2 1.200 2.900 1.300 1.800 2.900 3.200 4.900 3.900 1.300.4 1.800.4 2.500.3.800-.1 1.500-.7 1.700-1.400.2-.5.200-1 .1-1.100-.1-.1-.3-.2-.5-.3Z"/></svg>
+          Chat on WhatsApp now
+        </a>
+        <a class="btn btn-ghost" href="#form-order">Fill out the form</a>
+      </div>
+      <p class="scope">We only work on systems, accounts, and devices that belong to you, or that you are authorized to secure. Every engagement begins with written consent.</p>
+    </div>
+
+    <div class="formcard" id="form-order">
+      <div id="formView">
+        <h2>Send us your issue</h2>
+        <p class="sub">An admin will contact you via WhatsApp or Telegram.</p>
+        <form id="orderForm" method="POST" target="ssi_target" accept-charset="UTF-8" novalidate>
+          <div class="hp" aria-hidden="true"><label>Do not fill in<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="two">
+            <div class="field">
+              <label for="nama">Name / nickname</label>
+              <input id="nama" name="nama" type="text" maxlength="60" autocomplete="nickname" required>
+              <div class="err">Enter your name or nickname.</div>
+            </div>
+            <div class="field">
+              <label for="kota">City</label>
+              <input id="kota" name="kota" type="text" maxlength="60" autocomplete="address-level2" placeholder="e.g. Bandar Lampung" required>
+              <div class="err">Enter your city.</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="layanan">Selected service</label>
+            <select id="layanan" name="layanan" required>
+              <option value="">Select a service…</option>
+              <option>Penetration Testing</option>
+              <option>Security Audit</option>
+              <option>Digital Forensics</option>
+              <option>Account Recovery</option>
+              <option>Incident Response (hacked / ransomware)</option>
+              <option>Security Consultation</option>
+              <option>Not sure, I need advice</option>
+            </select>
+            <div class="err">Select one of the services.</div>
+          </div>
+          <div class="field">
+            <label for="kontak">WhatsApp / Telegram</label>
+            <input id="kontak" name="kontak" type="text" maxlength="60" placeholder="e.g. 0812xxxxxxx or @username" required>
+            <div class="err">Enter your WhatsApp number or Telegram username so an admin can reach you.</div>
+          </div>
+          <div class="field">
+            <label for="keluhan">Your issue <small>(do not write any passwords)</small></label>
+            <textarea id="keluhan" name="keluhan" maxlength="2000" placeholder="What happened? When did it start? Which accounts, devices, or systems are affected?" required></textarea>
+            <div class="err">Describe your problem in at least a few sentences.</div>
+          </div>
+          <button class="btn submit" type="submit" id="submitBtn">Send request</button>
+          <div class="formmsg" id="formMsg" role="alert"></div>
+          <div class="secure">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <span>Sent over an encrypted HTTPS connection. Data is read only by admins and never shared with third parties.</span>
+          </div>
+        </form>
+      </div>
+
+      <iframe name="ssi_target" id="ssi_target" title="Form receiver" style="display:none" tabindex="-1" aria-hidden="true"></iframe>
+
+      <div class="done" id="doneView" aria-live="polite">
+        <div class="tick"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7"/></svg></div>
+        <h2>Request sent</h2>
+        <p>Thank you. An admin will read your issue and contact you through the contact details you provided. If it's urgent, you can also chat on WhatsApp directly.</p>
+        <a class="btn btn-wa" id="waBtn2" href="#" target="_blank" rel="noopener">Chat with admin on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+  </main>
+</div>
+
+<section id="layanan">
+  <div class="wrap">
+    <h2 class="sec">Services you can order</h2>
+    <p class="sec-lede">Choose the one closest to your problem. If you're not sure, select “Not sure” in the form and we'll help you decide.</p>
+    <ul class="svc">
+      <li><h3>Penetration Testing</h3><p>Controlled attack simulations on your website, application, or network to find weaknesses before attackers do. You receive a findings report along with how to fix each issue.</p></li>
+      <li><h3>Security Audit</h3><p>A thorough review of the configuration, access, and security habits of your business or personal setup, with a prioritized list of fixes.</p></li>
+      <li><h3>Digital Forensics</h3><p>Investigating what happened after an incident: where the attack came from, what data was affected, and what evidence can be preserved.</p></li>
+      <li><h3>Account Recovery</h3><p>Helping you regain email, social media, or other accounts that were taken over, then locking them down again so it doesn't happen twice.</p></li>
+      <li><h3>Incident Response</h3><p>Fast handling when a system is hit by a hack or ransomware: contain the damage, clean up, and recover.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="cara-order" class="tinted">
+  <div class="wrap">
+    <h2 class="sec">How to order, in three steps</h2>
+    <p class="sec-lede">The process is short. You don't need to understand technical terms to get started.</p>
+    <ol class="steps">
+      <li><h3>Fill out the form</h3><p>Write your name, city, service, and contact, and describe your issue.</p></li>
+      <li><h3>Problem analysis</h3><p>An admin reads your issue, contacts you, then explains the initial findings, estimated time, and cost.</p></li>
+      <li><h3>Execution and solution</h3><p>Once you agree, the team does the work and reports the results along with preventive steps.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="privasi">
+  <div class="wrap trust">
+    <div>
+      <h2 class="sec">Your issue is treated as confidential</h2>
+      <p class="sec-lede" style="margin-bottom:0">Stories about security problems are sensitive. That is why the way we handle data is kept as strict as possible.</p>
+    </div>
+    <ul>
+      <li><strong>Encrypted form</strong>Data is sent over HTTPS, not plain text.</li>
+      <li><strong>Limited access</strong>Only admins receive notifications and open the order records.</li>
+      <li><strong>No passwords</strong>We never ask for passwords through this form.</li>
+      <li><strong>Written consent</strong>No testing or technical action happens without your approval.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="tim">
+  <div class="wrap">
+    <h2 class="sec">The admins who handle your case</h2>
+    <p class="sec-lede">Get to know who reads your issue. You can use these LinkedIn profiles to verify that we're real.</p>
+    <ul class="svc">
+      <li><h3>Satria Adhipradana</h3><p><a href="https://www.linkedin.com/in/satriaadhipradana/" target="_blank" rel="noopener">View LinkedIn profile</a></p></li>
+      <li><h3>Erika Ramen</h3><p><a href="https://www.linkedin.com/in/erika-ramen/" target="_blank" rel="noopener">View LinkedIn profile</a></p></li>
+      <li><h3>Endriel Hanan</h3><p><a href="https://www.linkedin.com/in/endrielhanan/" target="_blank" rel="noopener">View LinkedIn profile</a></p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="testimoni" class="tinted">
+  <div class="wrap">
+    <h2 class="sec">What people we've helped say</h2>
+    <p class="sec-lede">Names are anonymized at the client's request. We don't show details that could endanger their security.</p>
+    <div class="tm-grid" id="tmGrid"></div>
+    <div class="tm-empty" id="tmEmpty" hidden>
+      <p>Client testimonials will appear here. We only publish genuine testimonials that clients have approved.</p>
+      <p>Have you used our services? Share your experience on WhatsApp. We'd be happy to feature it, with your name anonymized if you prefer.</p>
+      <a class="btn btn-wa" id="tmWa" href="#" target="_blank" rel="noopener">Send a testimonial via WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section id="instagram" hidden>
+  <div class="wrap">
+    <h2 class="sec">Security tips from our Instagram</h2>
+    <p class="sec-lede">Latest posts from the official account @shadowsecindonesia.</p>
+
+    <div class="ig-gate" id="igGate">
+      <p>Posts are displayed directly from Instagram. When loaded, Instagram (Meta) may receive data about your visit. That is why posts are only loaded after you press the button.</p>
+      <button type="button" class="btn btn-wa" id="igLoad">Show posts</button>
+    </div>
+
+    <div class="ig-grid" id="igGrid"></div>
+
+    <p class="ig-more">
+      <a class="btn btn-ghost" href="https://www.instagram.com/shadowsecindonesia/" target="_blank" rel="noopener">Open our Instagram</a>
+    </p>
+  </div>
+</section>
+
+<section id="faq" class="tinted">
+  <div class="wrap">
+    <h2 class="sec">FAQ</h2>
+    <p class="sec-lede"></p>
+    <details open><summary>Why does Shadow Security Indonesia only have a simple page instead of a full website?</summary><p>This is a security decision. A large website with logins, a database, and an admin panel gives attackers many more doors, and security companies are attractive targets. With a static page that has no user accounts and no database on the web server, we minimize attacks against Shadow Security Indonesia. That lets us focus on handling your case, and the risk of customer data leaking stays small too. Order data goes only into closed storage that admins access.</p></details>
+    <details><summary>How do I know this is genuine and not a scam?</summary><p>Match the contacts on this page with our official accounts on Instagram, Facebook, Threads, and the admins' LinkedIn profiles. We never ask for your password or verification code (OTP). Payment is only discussed after you understand and agree to the work plan.</p></details>
+    <details><summary>I've just been hacked. What should I do right now?</summary><p>Change the passwords of important accounts from a device you trust is safe, enable two-step verification, and sign out all unrecognized devices from your accounts. Do not pay a ransom or reply to the attacker. Then contact us on WhatsApp so we can help you handle it.</p></details>
+    <details><summary>Do I need to send my account password?</summary><p>No. Never write passwords, PINs, or OTP codes in the form or in chat. If access is needed, an admin will explain a safe way to provide it.</p></details>
+    <details><summary>How long does the admin take to reply?</summary><p>An admin will contact you via the WhatsApp or Telegram you provided. For urgent cases such as a newly hacked account, use the WhatsApp chat button.</p></details>
+    <details><summary>Do I need to pay before the analysis?</summary><p>An admin explains the initial findings, estimated time, and cost first. Work only starts after you agree.</p></details>
+    <details><summary>Can I ask you to hack someone else's account?</summary><p>No. We only work on systems, accounts, and devices that belong to you or that you are authorized to secure.</p></details>
+    <details><summary>Is my identity kept confidential?</summary><p>Yes. You may use a nickname. Data is only used to handle your order.</p></details>
+  </div>
+</section>
+
+<footer id="kontak">
+  <div class="wrap row">
+    <div>
+      <a class="brand" href="#"><img src="logo.jpg" alt="" width="46" height="46">Shadow Security Indonesia</a>
+      <p style="margin:12px 0 0;max-width:26em">Cybersecurity services for individuals and businesses throughout Indonesia.</p>
+    </div>
+    <div>
+      <p class="ft">Contact an admin</p>
+      <p style="margin:0 0 4px"><a id="waFooter" href="#" target="_blank" rel="noopener">WhatsApp 0823-7539-2255</a></p>
+      <p style="margin:0 0 4px"><a href="mailto:satriaadhipradana2701@gmail.com">satriaadhipradana2701@gmail.com</a></p>
+      <p style="margin:0"><a href="mailto:erikanimade@gmail.com">erikanimade@gmail.com</a></p>
+    </div>
+    <div>
+      <p class="ft">Office address</p>
+      <address>91 Tanglin Rd, #04-02<br>Singapore 247918</address>
+      <p style="margin:0"><a href="https://www.google.com/maps/place/Shadow+Security+IDN/@1.3055616,103.8251868,19z/data=!4m6!3m5!1s0x31da19003593748f:0x39064aec4eb0d7a2!8m2!3d1.3054275!4d103.8251761!16s%2Fg%2F11p1gnhrg8?entry=ttu&g_ep=EgoyMDI2MTAwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">Open in Google Maps</a></p>
+    </div>
+    <div>
+      <p class="ft">Official social media</p>
+      <p style="margin:0 0 4px"><a href="https://www.instagram.com/shadowsecindonesia/" target="_blank" rel="noopener">Instagram</a></p>
+      <p style="margin:0 0 4px"><a href="https://web.facebook.com/shadowsecurityindonesia" target="_blank" rel="noopener">Facebook</a></p>
+      <p style="margin:0"><a href="https://www.threads.com/@shadowsecindonesia" target="_blank" rel="noopener">Threads</a></p>
+    </div>
+  </div>
+</footer>
+
+<a class="float-wa" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="Chat with admin on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.500 12.100c-.2-.1-1.500-.7-1.700-.8-.2-.1-.4-.1-.6.100l-.8 1c-.1.200-.3.200-.5.100-1.500-.7-2.500-1.300-3.400-2.900-.3-.5.300-.5.800-1.500.1-.2 0-.3 0-.5l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.100-.7.300-.7.700-1 1.500-1 2.400.1 1 .5 2 1.200 2.900 1.300 1.800 2.900 3.200 4.900 3.900 1.300.4 1.800.4 2.500.3.800-.1 1.500-.7 1.700-1.400.2-.5.200-1 .1-1.100-.1-.1-.3-.2-.5-.3Z"/></svg>
+</a>
+
+<script>
+/* ============ PENGATURAN: ubah bagian ini saja ============ */
+const CONFIG = {
+  // URL Web App dari Google Apps Script (lihat panduan Code.gs)
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxwXAYnNh8RpwW9UYdFSf62pJFQVOiCu8h5EM5NqtOXO8sbimrghNle58uSxa8xTcec/exec",
+  // Nomor WhatsApp admin, format internasional tanpa + atau 0 di depan
+  WA_NUMBER: "6282375392255",
+  WA_TEXT: "Hello Shadow Security Indonesia, I would like a security consultation.",
+  ADMIN_ONLINE: true,
+  ONLINE_TEXT: "Admin online · slots available",
+  OFFLINE_TEXT: "Admin offline · we will reply when back online"
+};
+/* ========================================================== */
+
+const $ = s => document.querySelector(s);
+const waUrl = "https://wa.me/" + CONFIG.WA_NUMBER + "?text=" + encodeURIComponent(CONFIG.WA_TEXT);
+["#waBtn","#waBtn2","#waFooter","#waFloat"].forEach(id => { const el=$(id); if(el) el.href = waUrl; });
+$("#statusText").textContent = CONFIG.ADMIN_ONLINE ? CONFIG.ONLINE_TEXT : CONFIG.OFFLINE_TEXT;
+if(!CONFIG.ADMIN_ONLINE) document.querySelector(".dot").style.background = "#9AA4B2";
+
+/* Bayangan panjang pada judul mengikuti pointer */
+(function(){
+  const h = $("#headline"), root = document.documentElement;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function paint(dx, dy){
+    const len = Math.hypot(dx, dy) || 1;
+    const ux = dx/len, uy = dy/len, steps = 28;
+    const layers = [];
+    for(let i=1;i<=steps;i++){
+      const a = (0.2 * (1 - i/(steps+1))).toFixed(3);
+      layers.push(`${(ux*i*1.6).toFixed(1)}px ${(uy*i*1.6).toFixed(1)}px 0 rgba(17,24,39,${a})`);
+    }
+    h.style.textShadow = layers.join(",");
+    root.style.setProperty("--sx", (ux*18).toFixed(1));
+    root.style.setProperty("--sy", (uy*18).toFixed(1));
+  }
+  paint(1, 0.8);
+  if(reduce) return;
+  let raf = 0;
+  addEventListener("pointermove", e => {
+    if(e.pointerType === "touch") return;
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const r = h.getBoundingClientRect();
+      const cx = r.left + r.width*0.4, cy = r.top + r.height*0.4;
+      /* bayangan jatuh berlawanan dari sumber cahaya (pointer) */
+      paint(cx - e.clientX, cy - e.clientY);
+    });
+  }, {passive:true});
+})();
+
+/* Formulir */
+const form = $("#orderForm"), btn = $("#submitBtn"), msg = $("#formMsg");
+const rules = {
+  nama: v => v.trim().length >= 2,
+  kota: v => v.trim().length >= 2,
+  layanan: v => v !== "",
+  kontak: v => v.trim().length >= 5,
+  keluhan: v => v.trim().length >= 15
+};
+function validate(){
+  let ok = true, first = null;
+  for(const k in rules){
+    const el = form.elements[k], good = rules[k](el.value);
+    el.closest(".field").classList.toggle("bad", !good);
+    if(!good){ ok = false; first = first || el; }
+  }
+  if(first) first.focus();
+  return ok;
+}
+form.addEventListener("input", e => e.target.closest(".field")?.classList.remove("bad"));
+
+let pending = null;
+function showDone(){
+  clearTimeout(pending);
+  $("#formView").style.display = "none";
+  $("#doneView").classList.add("show");
+  $("#doneView").scrollIntoView({block:"nearest", behavior:"smooth"});
+}
+function showError(t){
+  clearTimeout(pending);
+  msg.className = "formmsg error"; msg.textContent = t;
+  btn.disabled = false; btn.textContent = "Send request";
+}
+/* Konfirmasi dari Apps Script (dikirim lewat postMessage dari halaman balasan) */
+addEventListener("message", e => {
+  let host = "";
+  try{ host = new URL(e.origin).hostname; }catch(_){ return; }
+  if(!(host.endsWith(".googleusercontent.com") || host.endsWith(".google.com"))) return;
+  const d = e.data;
+  if(!d || d.ssi !== true) return;
+  if(d.ok) showDone();
+  else showError("The server rejected the data (" + (d.error || "unknown") + "). Please try again or contact us on WhatsApp.");
+});
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  msg.className = "formmsg"; msg.textContent = "";
+  if(form.elements.website.value) return;           /* honeypot: bot */
+  if(!validate()) return;
+  const url = (CONFIG.APPS_SCRIPT_URL || "").trim();
+  if(!/^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+|macros)\/s\/[^\/]+\/exec$/.test(url)){
+    showError("The form is not yet connected to Google Sheets (the Web App address has not been filled in correctly). For now, please send via the WhatsApp button.");
+    return;
+  }
+  btn.disabled = true; btn.textContent = "Sending…";
+  let h = form.elements.halaman;
+  if(!h){ h = document.createElement("input"); h.type = "hidden"; h.name = "halaman"; form.appendChild(h); }
+  h.value = location.href;
+  form.action = url;
+  /* Kirim sebagai formulir biasa ke iframe tersembunyi: tidak kena batasan CORS */
+  HTMLFormElement.prototype.submit.call(form);
+  pending = setTimeout(() => showError("No confirmation from the server yet. Your message may not have been sent. Please try again, or contact us on WhatsApp."), 25000);
+});
+</script>
+<script>
+/* =================== ISI DI SINI =================== */
+
+/* Testimoni: HANYA isi dengan testimoni asli dan yang sudah diizinkan klien.
+   Hapus tanda // di depan contoh format, lalu ganti dengan data sebenarnya.
+   Selama daftar kosong, bagian testimoni tidak tampil di halaman. */
+const TESTIMONIALS = [
+  // { nama: "Nathan", kota: "Jayapura", layanan: "Security Audit", isi: "Layanan Fast Respon tanpa administrasi yang berbelit. Pengerjaan dan Hasilnya Sesuai Kebutuhan saya.", foto: "" },
+  // foto = opsional (nama file gambar di server atau alamat https). Jika kosong, tampil lingkaran berisi inisial nama.
+  // { nama: "Dimas", kota: "Surabaya", layanan: "Penetration Testing", isi: "Pelayanan yang mudah dan sangat menjaga Privasi Saya. Saya sangat terbantu." },
+];
+
+/* Postingan Instagram: tempel link postingan atau reel (akun harus publik).
+   Cara dapat link: buka postingan > titik tiga > Salin tautan.
+   Selama daftar kosong, bagian Instagram tidak tampil di halaman. */
+const IG_POSTS = [
+  "https://www.instagram.com/p/Dd0CKumklho/",
+  // "https://www.instagram.com/p/KODEPOSTINGAN/",
+  // "https://www.instagram.com/reel/KODEREEL/",
+];
+
+/* Ubah ke true jika ingin postingan langsung dimuat tanpa tombol persetujuan */
+const IG_AUTOLOAD = false;
+
+/* =================== KODE (tidak perlu diubah) =================== */
+(function(){
+  /* --- Testimoni --- */
+  const tmSec = document.getElementById("testimoni");
+  const tmGrid = document.getElementById("tmGrid");
+  if(tmSec && tmGrid){
+    (Array.isArray(TESTIMONIALS) ? TESTIMONIALS : []).forEach(t => {
+      if(!t || !t.isi) return;
+      const fig = document.createElement("figure");
+      fig.className = "tm-item";
+      const cap = document.createElement("figcaption");
+      const nama = t.nama || "Client";
+      const ava = document.createElement("span");
+      ava.className = "tm-ava";
+      ava.setAttribute("aria-hidden", "true");
+      ava.textContent = nama.trim().split(/\s+/).slice(0, 2).map(w => w.charAt(0)).join("").toUpperCase() || "K";
+      const pal = ["#111827", "#44546A", "#C8102E", "#1C7C54", "#8A5A12"];
+      let hsh = 0;
+      for(const ch of nama) hsh = (hsh * 31 + ch.charCodeAt(0)) >>> 0;
+      ava.style.background = pal[hsh % pal.length];
+      if(t.foto && /^(https:\/\/|[\w\/.\-]+\.(jpe?g|png|webp|avif)$)/i.test(t.foto)){
+        const im = document.createElement("img");
+        im.alt = ""; im.loading = "lazy"; im.src = t.foto;
+        im.onerror = () => im.remove();   /* foto gagal dimuat: tampil inisial */
+        ava.appendChild(im);
+      }
+      const who = document.createElement("span");
+      who.className = "tm-who";
+      const n = document.createElement("span");
+      n.className = "tm-name"; n.textContent = nama;
+      who.appendChild(n);
+      if(t.kota){ const m = document.createElement("span"); m.className = "tm-meta"; m.textContent = t.kota; who.appendChild(m); }
+      if(t.layanan){ const tag = document.createElement("span"); tag.className = "tm-tag"; tag.textContent = t.layanan; who.appendChild(tag); }
+      cap.append(ava, who);
+      const q = document.createElement("blockquote");
+      q.textContent = t.isi;
+      fig.append(cap, q);
+      tmGrid.appendChild(fig);
+    });
+    tmSec.hidden = false;
+    if(!tmGrid.children.length){
+      const em = document.getElementById("tmEmpty"), wa = document.getElementById("tmWa"), main = document.getElementById("waBtn");
+      if(em){ em.hidden = false; if(wa && main) wa.href = main.href; }
+    }
+  }
+
+  /* --- Instagram --- */
+  const igSec = document.getElementById("instagram");
+  const igGrid = document.getElementById("igGrid");
+  const igGate = document.getElementById("igGate");
+  const igBtn = document.getElementById("igLoad");
+  const OK = /^https:\/\/www\.instagram\.com\/(p|reel|tv)\/[A-Za-z0-9_-]+\/?(\?.*)?$/;
+  const posts = (Array.isArray(IG_POSTS) ? IG_POSTS : []).filter(u => OK.test(u));
+  if(!igSec || !igGrid || !posts.length) return;
+  igSec.hidden = false;
+
+  let loaded = false;
+  function loadIG(){
+    if(loaded) return; loaded = true;
+    if(igGate) igGate.style.display = "none";
+    posts.forEach(u => {
+      const base = u.split("?")[0];
+      const bq = document.createElement("blockquote");
+      bq.className = "instagram-media";
+      bq.setAttribute("data-instgrm-permalink", base + "?utm_source=ig_embed&utm_campaign=loading");
+      bq.setAttribute("data-instgrm-version", "14");
+      const a = document.createElement("a");
+      a.href = base; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = "View this post on Instagram";
+      bq.appendChild(a);
+      igGrid.appendChild(bq);
+    });
+    if(window.instgrm && window.instgrm.Embeds){ window.instgrm.Embeds.process(); return; }
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.instagram.com/embed.js";
+    s.onload = () => { if(window.instgrm) window.instgrm.Embeds.process(); };
+    document.body.appendChild(s);
+  }
+  if(IG_AUTOLOAD) loadIG();
+  else if(igBtn) igBtn.addEventListener("click", loadIG);
+})();
+</script>
+
+<script>
+(function(){
+  var sec = document.getElementById("testimoni");
+  var nav = document.querySelector('nav[aria-label="Navigasi utama"]');
+  if(!sec || sec.hidden || !nav) return;
+  var link = document.createElement("a");
+  link.href = "#testimoni";
+  link.textContent = "Testimonials";
+  var anchor = nav.querySelector('a[href="#tim"]');
+  if(anchor) anchor.insertAdjacentElement("afterend", link);
+  else nav.appendChild(link);
+})();
+</script>
+</body>
+</html>
