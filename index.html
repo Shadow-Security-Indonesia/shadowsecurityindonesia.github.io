@@ -151,8 +151,7 @@ footer .brand{color:#fff}
 }
 @media (max-width:520px){ .two{grid-template-columns:1fr} .formcard{padding:22px} }
 @media (prefers-reduced-motion:reduce){ .dot{animation:none} html{scroll-behavior:auto} .btn{transition:none} }
-</style>
-  <style>
+
 /* ----- Testimoni ----- */
 .tm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px 36px}
 .tm-item{margin:0;padding:4px 0 4px 22px;border-left:3px solid var(--merah)}
@@ -323,7 +322,6 @@ footer .brand{color:#fff}
     <p class="sec-lede">Nama disamarkan atas permintaan klien. Kami tidak menampilkan detail yang bisa membahayakan keamanan mereka.</p>
     <div class="tm-grid" id="tmGrid"></div>
   </div>
-</section>
 
 <section id="instagram" hidden>
   <div class="wrap">
@@ -502,7 +500,7 @@ form.addEventListener("submit", e => {
   HTMLFormElement.prototype.submit.call(form);
   pending = setTimeout(() => showError("Belum ada konfirmasi dari server. Pesan mungkin belum terkirim. Coba kirim ulang, atau hubungi kami lewat WhatsApp."), 25000);
 });
-</script>
+
   <script>
 /* =================== ISI DI SINI =================== */
 
